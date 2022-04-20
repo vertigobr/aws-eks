@@ -7,6 +7,6 @@ prefix_version: 1.21.9
 node_pool_default:
   name: digitalocean-vkpr-node-pool
   size: s-2vcpu-2gb
-  node_count: 2
+  node_count: 1
 
 additional_node_pools: {}
