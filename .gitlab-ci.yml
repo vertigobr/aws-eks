@@ -10,24 +10,28 @@ init:
   extends: .init
   before_script:
     - echo -e "credentials \"gitlab.com\" {\n  token = \"$CI_JOB_TOKEN\"\n}" > $TF_CLI_CONFIG_FILE
+  environment: $CI_COMMIT_BRANCH
+  except:
+    - master
 
 validate:
   extends: .validate
+  environment: $CI_COMMIT_BRANCH
 
 build:
   extends: .build
-  only:
-    - main
+  environment: $CI_COMMIT_BRANCH
+
 
 deploy:
   extends: .deploy
   artifacts:
     paths:
       - ./kube
-  only:
-    - main
+  environment: $CI_COMMIT_BRANCH
+
 
 destroy:
   extends: .destroy
-  only:
-    - main
+  environment: $CI_COMMIT_BRANCH
+
