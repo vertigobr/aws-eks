@@ -1,0 +1,33 @@
+include:
+  - project: vkpr/templates
+    file: Full-Workflow-GitLab-Backend.gitlab-ci.yml
+
+
+variables:
+  TF_VAR_do_token: $DO_TOKEN
+
+init:
+  extends: .init
+  before_script:
+    - echo -e "credentials \"gitlab.com\" {\n  token = \"$CI_JOB_TOKEN\"\n}" > $TF_CLI_CONFIG_FILE
+
+validate:
+  extends: .validate
+
+build:
+  extends: .build
+  only:
+    - main
+
+deploy:
+  extends: .deploy
+  artifacts:
+    paths:
+      - ./kube
+  only:
+    - main
+
+destroy:
+  extends: .destroy
+  only:
+    - main
