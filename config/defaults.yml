@@ -2,7 +2,7 @@
 
 region: "nyc1"
 cluster_name: "digitalocean-vkpr-cluster"
-prefix_version: 1.21.8-do.1
+prefix_version: 1.21.8
 
 node_pool_default:
   name: digitalocean-vkpr-node-pool
