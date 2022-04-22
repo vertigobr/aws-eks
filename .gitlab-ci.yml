@@ -2,7 +2,6 @@ include:
   - project: vkpr/templates
     file: Full-Workflow-GitLab-Backend.gitlab-ci.yml
 
-
 variables:
   TF_VAR_do_token: $DO_TOKEN
 
@@ -10,6 +9,11 @@ init:
   extends: .init
   before_script:
     - echo -e "credentials \"gitlab.com\" {\n  token = \"$CI_JOB_TOKEN\"\n}" > $TF_CLI_CONFIG_FILE
+    - sed -i "s/digitalocean-vkpr-cluster/$CLUSTER_NAME/g; \
+      s/nyc1/$REGION/g; \
+      s/1.22./$K8S_VERSION/g; \
+      s/s-2vcpu-2gb/$CLUSTER_NODE_INSTANCE_TYPE/g; \
+      s/node_count\:\ 1/node_count\:\ $CLUSTER_NODE_INSTANCE_TYPE/g" $(pwd)/config/defaults.yml
   environment: $CI_COMMIT_BRANCH
   except:
     - master
@@ -22,7 +26,6 @@ build:
   extends: .build
   environment: $CI_COMMIT_BRANCH
 
-
 deploy:
   extends: .deploy
   artifacts:
@@ -30,8 +33,6 @@ deploy:
       - ./kube
   environment: $CI_COMMIT_BRANCH
 
-
 destroy:
   extends: .destroy
   environment: $CI_COMMIT_BRANCH
-
