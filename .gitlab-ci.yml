@@ -2,9 +2,11 @@ include:
   - project: vkpr/templates
     file: Full-Workflow-GitLab-Backend.gitlab-ci.yml
 
-
 variables:
   TF_VAR_do_token: $DO_TOKEN
+  TF_VAR_cluster_name: $CLUSTER_NAME
+  TF_VAR_prefix_version: $K8S_VERSION
+  TF_VAR_region: $REGION
 
 init:
   extends: .init
@@ -22,7 +24,6 @@ build:
   extends: .build
   environment: $CI_COMMIT_BRANCH
 
-
 deploy:
   extends: .deploy
   artifacts:
@@ -30,8 +31,6 @@ deploy:
       - ./kube
   environment: $CI_COMMIT_BRANCH
 
-
 destroy:
   extends: .destroy
   environment: $CI_COMMIT_BRANCH
-
