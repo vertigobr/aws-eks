@@ -1,11 +1,10 @@
 ---
 region: "nyc1"
-cluster_name: "digitalocean-vkpr-cluster"
+cluster_name: "do-sample"
+root_access: false
 prefix_version: "1.22."
-
 node_pool_default:
-  name: digitalocean-vkpr-node-pool
+  name: do-sample-node-pool
   size: s-2vcpu-2gb
-  node_count: 1
-
+  node_count: "1"
 additional_node_pools: {}

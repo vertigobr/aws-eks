@@ -37,8 +37,3 @@ variable "additional_node_pools" {
   description = "Additional node pools for the cluster"
   default     = {}
 }
-
-variable "create_kubeconfig" {
-  type    = bool
-  default = true
-}

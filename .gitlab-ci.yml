@@ -2,10 +2,16 @@ include:
   - project: vkpr/templates
     file: Full-Workflow-GitLab-Backend.gitlab-ci.yml
 
-variables:
-  TF_VAR_do_token: $DO_TOKEN
+stages:
+  - init
+  - lint
+  - build
+  - infra_status
+  - deploy
+  - destroy
 
 init:
+  stage: init
   extends: .init
   before_script:
     - echo -e "credentials \"gitlab.com\" {\n  token = \"$CI_JOB_TOKEN\"\n}" > $TF_CLI_CONFIG_FILE
@@ -13,21 +19,88 @@ init:
   except:
     - master
 
-validate:
-  extends: .validate
-  environment: $CI_COMMIT_BRANCH
-
 build:
-  extends: .build
-  environment: $CI_COMMIT_BRANCH
+  stage: build
+  before_script:
+    - mkdir -p ${CI_PROJECT_DIR}/caches
+  script:
+    - gitlab-terraform plan
+    - gitlab-terraform show -json plan.cache > ${CI_PROJECT_DIR}/caches/tf-new.json
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - ${CI_PROJECT_DIR}/caches/
+  needs:
+    - init
+  dependencies:
+    - init
+
+checkov:
+  stage: infra_status
+  image:
+    name: bridgecrew/checkov:2
+    entrypoint:
+      - ""
+  script:
+    - checkov -f ${CI_PROJECT_DIR}/caches/tf-new.json --quiet --compact
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - ${CI_PROJECT_DIR}/caches/
+  allow_failure: true
+  needs:
+    - build
+  dependencies:
+    - build
+
+infracost:
+  stage: infra_status
+  image:
+    name: infracost/infracost:ci-0.10
+    entrypoint:
+      - ""
+  variables:
+    INFRACOST_API_KEY: $INFRACOST_API_KEY
+    GITLAB_TOKEN: $GITLAB_TOKEN
+  script:
+    - infracost breakdown --show-skipped --path ${CI_PROJECT_DIR}/caches/tf-new.json
+    - |
+      if [[ -f "${CI_PROJECT_DIR}/caches/tf.json" ]]; then 
+        infracost breakdown --path ${CI_PROJECT_DIR}/caches/tf.json --format json --out-file infracost.json
+        infracost diff --show-skipped --path=${CI_PROJECT_DIR}/caches/tf-new.json --compare-to=infracost.json 
+      else
+        mv ${CI_PROJECT_DIR}/caches/tf-new.json ${CI_PROJECT_DIR}/caches/tf.json
+      fi
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - ${CI_PROJECT_DIR}/caches/
+  needs:
+    - build
+  dependencies:
+    - build
 
 deploy:
+  stage: deploy
   extends: .deploy
   artifacts:
     paths:
       - ./kube
+  after_script:
+    - mv ${CI_PROJECT_DIR}/caches/tf-new.plan ${CI_PROJECT_DIR}/caches/tf.plan
   environment: $CI_COMMIT_BRANCH
+  needs:
+    - infracost
+    - checkov
+  dependencies:
+    - infracost
+    - checkov
 
 destroy:
+  stage: destroy
   extends: .destroy
   environment: $CI_COMMIT_BRANCH
+  needs:
+    - deploy
+  dependencies:
+    - deploy
