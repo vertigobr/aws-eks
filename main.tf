@@ -1,5 +1,5 @@
 module "cluster" {
-  source  = "gitlab.com/vkpr/terraform-digtalocean-cluster/digitalocean"
+  source  = "gitlab.com/vkpr/terraform-digitalocean-cluster/digitalocean"
   version = "~> 1.0.0"
 
   cluster_name          = local.config.cluster_name
