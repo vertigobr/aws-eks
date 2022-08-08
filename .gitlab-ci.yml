@@ -11,7 +11,7 @@ include:
       - Security-Checkov.gitlab-ci.yml
 
 variables:
-  TF_VAR_do_token: "$AWS_ACCESS_KEY"
+  TF_VAR_do_token: "$DO_TOKEN"
 
 stages:
   - iac_init
