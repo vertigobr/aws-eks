@@ -28,7 +28,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          terraform plan -out plan.cache
+          terraform plan -lock=false -out plan.cache
           terraform show -json plan.cache > plan.json
         continue-on-error: true
       - name: "Upload Artifact"
