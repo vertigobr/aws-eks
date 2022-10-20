@@ -1,0 +1,34 @@
+name: Deploy
+
+on:
+  push:
+    branches: ["master"]
+  workflow_dispatch:
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+      - name: Terraform Init
+        id: init
+        run: terraform init
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan -out plan.cache
+          terraform show -json plan.cache > plan.json
+        continue-on-error: true
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v2
+        with:
+          name: plan-file
+          path: plan.json
