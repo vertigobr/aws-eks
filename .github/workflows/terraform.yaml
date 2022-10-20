@@ -27,12 +27,10 @@ jobs:
         run: terraform validate -no-color
       - name: Terraform Plan
         id: plan
-        run: |
-          terraform plan -lock=false -out plan.cache
-          terraform show -json plan.cache > plan.json
+        run: terraform plan -lock=false -no-color -out plan.cache
         continue-on-error: true
       - name: "Upload Artifact"
         uses: actions/upload-artifact@v2
         with:
           name: plan-file
-          path: plan.json
+          path: plan.cache
