@@ -4,11 +4,6 @@ on:
   workflow_run:
     workflows:
       - "init"
-    branches:
-      - "*"
-      - "*/*"
-      - "**"
-      #- "!master"
     types:
       - completed
 
@@ -60,5 +55,8 @@ jobs:
             .terraform.lock.hcl
             plan.cache
           key: terraform-lock-${{ steps.extract_branch.outputs.branch }}
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -destroy -no-color -out plan-destroy.cache
       - name: Terraform Destroy
-        run: terraform destroy -input=false -no-color -auto-approve
+        run: terraform apply -destroy -input=false -no-color -auto-approve plan-destroy.cache
