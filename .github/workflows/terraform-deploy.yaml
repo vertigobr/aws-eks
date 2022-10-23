@@ -4,6 +4,8 @@ on:
   workflow_run:
     workflows:
       - "init"
+    branches:
+      - ${GITHUB_REF#refs/heads/}
     types:
       - completed
 
