@@ -21,7 +21,6 @@ jobs:
           path: |
             .terraform/**
             .terraform.lock.hcl
-            plan.cache
           key: terraform-lock
       - name: Terraform Init
         id: init
@@ -46,6 +45,10 @@ jobs:
           key: terraform-lock
       - name: Terraform Plan
         run: terraform plan -lock=false -no-color -out plan.cache
+      - uses: actions/cache@v3
+        with:
+          path: plan.cache
+          key: terraform-plan
 
       #- name: "Upload Artifact"
       #  uses: actions/upload-artifact@v2
@@ -70,8 +73,11 @@ jobs:
           path: |
             .terraform/**
             .terraform.lock.hcl
-            plan.cache
           key: terraform-lock
+      - uses: actions/cache@v3
+        with:
+          path: plan.cache
+          key: terraform-plan
       - name: Terraform show
         run: terraform show -json plan.cache
 
