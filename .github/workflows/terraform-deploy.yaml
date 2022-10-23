@@ -16,15 +16,12 @@ jobs:
   apply:
     runs-on: ubuntu-latest
     needs: init
-    environment:
-      name: Apply
-    env:
-      TF_VAR_do_token: "${{ secrets.DO_TOKEN }}"
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.3.0
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
       - uses: actions/cache@v3
         with:
           path: |
@@ -47,6 +44,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.3.0
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
       - uses: actions/cache@v3
         with:
           path: |
