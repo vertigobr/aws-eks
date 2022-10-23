@@ -25,8 +25,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           key: terraform_lock
-          path: |
-            .terraform/**
+          path: .terraform/**
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
