@@ -11,7 +11,7 @@ terraform {
   cloud {
     organization = "github-actions-pipelines"
     workspaces {
-      name = "pipeline-test"
+      name = "pipeline-test-dev"
     }
   }
 }
