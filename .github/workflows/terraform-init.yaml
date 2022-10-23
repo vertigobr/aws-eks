@@ -9,9 +9,6 @@ on:
       #- "!master"
   workflow_dispatch:
 
-env:
-  GIT_BRANCH: ${GITHUB_REF##*/}
-
 jobs:
   init:
     runs-on: ubuntu-latest
@@ -22,13 +19,17 @@ jobs:
           terraform_version: 1.3.0
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
         continue-on-error: true
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - uses: actions/cache@v3
         with:
           path: |
             .terraform/**
             .terraform.lock.hcl
             plan.cache
-          key: terraform-lock-${{ env.GIT_BRANCH }}
+          key: terraform-lock-${{ steps.extract_branch.outputs.branch }}
       - name: Terraform Init
         id: init
         run: terraform init
