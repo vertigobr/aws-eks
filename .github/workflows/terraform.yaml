@@ -29,11 +29,13 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: terraform plan -no-color -out plan.cache
+      - name: encrypt cache
+        run: zip -p ${{ secrets.ZIP_PASSWORD }} plan.zip plan.cache
       - name: "Upload Artifact"
         uses: actions/upload-artifact@v2
         with:
           name: plan-file
-          path: plan.cache
+          path: plan.zip
 
   apply:
     runs-on: ubuntu-latest
