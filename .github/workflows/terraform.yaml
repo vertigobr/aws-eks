@@ -60,7 +60,9 @@ jobs:
       - name: Use cache .terraform
         uses: actions/cache@v3
         with:
-          path: .terraform/**
+          path: |
+            .terraform.lock.hcl
+            .terraform/**
           key: terraform_dependencies
       - name: Terraform Plan
         run: terraform plan -lock=false -no-color -out plan.cache
