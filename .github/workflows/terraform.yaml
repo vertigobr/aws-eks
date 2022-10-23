@@ -31,7 +31,7 @@ jobs:
           path: |
             .terraform.lock.hcl
             .terraform/**
-          key: terraform_dependencies
+          key: terraform_lock
 
       - name: Terraform Validate
         id: validate
@@ -55,7 +55,7 @@ jobs:
           path: |
             .terraform.lock.hcl
             .terraform/**
-          key: terraform_dependencies
+          key: terraform_lock
       - name: Terraform Plan
         run: terraform plan -lock=false -no-color -out plan.cache
 
