@@ -1,0 +1,42 @@
+name: init
+
+on:
+  push:
+    branches:
+      - "*"
+      - "*/*"
+      - "**"
+      #- "!master"
+  workflow_dispatch:
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    env:
+      TF_VAR_do_token: "${{ secrets.DO_TOKEN }}"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.3.0
+        continue-on-error: true
+      - uses: actions/cache@v3
+        with:
+          path: |
+            .terraform/**
+            .terraform.lock.hcl
+            plan.cache
+          key: terraform-lock-${GITHUB_REF##*/}
+      - name: Terraform Init
+        id: init
+        run: terraform init
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -out plan.cache
+      - name: encrypt cache
+        run: zip --password "${{ secrets.ZIP_PASSWORD }}" plan.zip plan.cache
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v2
+        with:
+          name: plan-file
+          path: plan.zip
