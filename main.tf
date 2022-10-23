@@ -1,3 +1,4 @@
 resource "local_file" "example" {
-  content = "hello world"
+  filename = "example.md"
+  content  = "hello world"
 }
