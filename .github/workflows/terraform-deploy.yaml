@@ -53,4 +53,4 @@ jobs:
             plan.cache
           key: terraform-lock-${GITHUB_REF##*/}
       - name: Terraform Destroy
-        run: terraform apply -destroy -input=false -no-color -auto-approve plan.cache
+        run: terraform destroy -input=false -no-color -auto-approve plan.cache
