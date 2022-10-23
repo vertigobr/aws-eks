@@ -48,9 +48,7 @@ jobs:
         with:
           terraform_version: 1.3.0
       - name: Terraform Plan
-        id: plan
         run: terraform plan -lock=false -no-color -out plan.cache
-        continue-on-error: true
 
       #- name: "Upload Artifact"
       #  uses: actions/upload-artifact@v2
@@ -71,7 +69,6 @@ jobs:
         with:
           terraform_version: 1.3.0
       - name: Terraform show
-        id: show
         run: terraform show -json plan.cache
 
       #- name: Terraform Apply
