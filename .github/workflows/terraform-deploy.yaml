@@ -4,8 +4,6 @@ on:
   workflow_run:
     workflows:
       - "init"
-    branches:
-      - ${GITHUB_REF#refs/heads/}
     types:
       - completed
 
@@ -29,7 +27,7 @@ jobs:
             .terraform/**
             .terraform.lock.hcl
             plan.cache
-          key: terraform-lock-${{ steps.extract_branch.outputs.branch }}
+          key: terraform-lock-${{ github.event.workflow_run.head_branch }}
       - name: Terraform apply
         run: terraform apply -input=false -no-color -auto-approve plan.cache
 
