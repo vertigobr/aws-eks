@@ -11,6 +11,8 @@ on:
       #- "!master"
     types:
       - completed
+env:
+  GIT_BRANCH: ${GITHUB_REF##*/}
 
 jobs:
   apply:
@@ -28,7 +30,7 @@ jobs:
             .terraform/**
             .terraform.lock.hcl
             plan.cache
-          key: terraform-lock-${GITHUB_REF##*/}
+          key: terraform-lock-${{ env.GIT_BRANCH }}
       - name: Terraform apply
         run: terraform apply -input=false -no-color -auto-approve plan.cache
 
@@ -51,6 +53,6 @@ jobs:
             .terraform/**
             .terraform.lock.hcl
             plan.cache
-          key: terraform-lock-${GITHUB_REF##*/}
+          key: terraform-lock-${{ env.GIT_BRANCH }}
       - name: Terraform Destroy
-        run: terraform destroy -input=false -no-color -auto-approve plan.cache
+        run: terraform destroy -input=false -no-color -auto-approve

@@ -9,6 +9,9 @@ on:
       #- "!master"
   workflow_dispatch:
 
+env:
+  GIT_BRANCH: ${GITHUB_REF##*/}
+
 jobs:
   init:
     runs-on: ubuntu-latest
@@ -25,7 +28,7 @@ jobs:
             .terraform/**
             .terraform.lock.hcl
             plan.cache
-          key: terraform-lock-${GITHUB_REF##*/}
+          key: terraform-lock-${{ env.GIT_BRANCH }}
       - name: Terraform Init
         id: init
         run: terraform init
