@@ -1,13 +1,11 @@
 name: init
 
 on:
-  push:
-    branches:
-      - "*"
-      - "*/*"
-      - "**"
-      #- "!master"
-  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "backend"
+    types:
+      - completed
 
 jobs:
   init:
