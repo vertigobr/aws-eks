@@ -1,4 +1,4 @@
-name: Create Backend terraform S3
+name: backend
 on:
   push:
     branches:
