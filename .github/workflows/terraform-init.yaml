@@ -34,9 +34,9 @@ jobs:
         run: |
          echo -e "terraform { 
          backend "s3" { 
-           bucket = "${{ secrets.BUCKET_S3}}"
-           key    = "${{ secrets.BUCKET_S3}}.tfstate"
-           region = "${{ secrets.REGION}}"
+           bucket = '${{ secrets.BUCKET_S3}}'
+           key    = '${{ secrets.BUCKET_S3}}.tfstate'
+           region = '${{ secrets.REGION}}'
            } 
          }" >> main.tf
          cat main.tf 
