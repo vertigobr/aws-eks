@@ -23,16 +23,3 @@ jobs:
          aws s3api create-bucket \
          --bucket ${{ secrets.BUCKET_S3}}" \
          --region ${{ secrets.REGION }}
-           
-      - name: Import Backend S3
-        env:
-          VERSION: ""
-        run: |
-         echo -e "terraform { 
-         backend "s3" { 
-           bucket = "${{ secrets.BUCKET_S3}}"
-           key    = "${{ secrets.BUCKET_S3}}.tfstate"
-           region = "${{ secrets.REGION_S3}}"
-           } 
-         }" >> main.tf
-         cat main.tf 
