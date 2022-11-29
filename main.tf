@@ -1,4 +1,5 @@
-resource "local_file" "example" {
-  filename = "example.md"
-  content  = "hello world"
+provider "aws" {
+  region  = "us-east-1"
+  version = "~> 3.0"
+
 }
