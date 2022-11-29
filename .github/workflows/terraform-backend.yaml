@@ -21,5 +21,5 @@ jobs:
       - name: Create S3
         run: |
          aws s3 create-bucket \
-         --bucket ${{ secrets.BUCKET_S3}}" \
+         --bucket ${{ secrets.BUCKET_S3}} \
          --region ${{ secrets.REGION }}
