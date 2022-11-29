@@ -22,6 +22,7 @@ jobs:
         with:
           path: |
            .main.tf
+          key: terraform-lock-${{ steps.extract_branch.outputs.branch }}
       - name: Create S3
         run: |
          aws s3api create-bucket --bucket ${{ secrets.BUCKET_S3}} --region ${{ secrets.REGION }}
