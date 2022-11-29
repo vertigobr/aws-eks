@@ -36,7 +36,7 @@ jobs:
          backend "s3" { 
            bucket = "${{ secrets.BUCKET_S3}}"
            key    = "${{ secrets.BUCKET_S3}}.tfstate"
-           region = "${{ secrets.REGION_S3}}"
+           region = "${{ secrets.REGION}}"
            } 
          }" >> main.tf
          cat main.tf 
