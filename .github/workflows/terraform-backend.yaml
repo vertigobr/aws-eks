@@ -18,6 +18,12 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_KEY_ID}}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.REGION }} 
+      - uses: actions/cache@v3
+        with:
+          path: |
+           .main.tf
       - name: Create S3
         run: |
          aws s3api create-bucket --bucket ${{ secrets.BUCKET_S3}} --region ${{ secrets.REGION }}
+
+       
