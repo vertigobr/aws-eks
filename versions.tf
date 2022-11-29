@@ -8,10 +8,10 @@ terraform {
     }
   }
 
-  cloud {
-    organization = "github-actions-pipelines"
-    workspaces {
-      name = "pipeline-test"
-    }
-  }
-}
+#  cloud {
+#    organization = "github-actions-pipelines"
+#    workspaces {
+#      name = "pipeline-test"
+#    }
+#  }
+#}
