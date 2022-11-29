@@ -28,17 +28,6 @@ jobs:
             .terraform.lock.hcl
             plan.cache
           key: terraform-lock-${{ github.event.workflow_run.head_branch }}
-      - name: insert bucket s3
-      - run: |
-         echo -e "terraform { \n
-         backend "s3" { \n
-         # Lembre de trocar o bucket para o seu, não pode ser o mesmo nome
-         bucket = "descomplicando-terraform-gomex-tfstates" \n
-         key    = "terraform-test.tfstate" \n
-         region = "us-east-1" \n
-         } \n
-         }" >> main.tf
-         cat main.tf 
       - name: Terraform apply
         run: terraform apply -input=false -no-color -auto-approve plan.cache
 
