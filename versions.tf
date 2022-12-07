@@ -7,11 +7,4 @@ terraform {
       version = "~> 2.2.0"
     }
   }
-
-#  cloud {
-#    organization = "github-actions-pipelines"
-#    workspaces {
-#      name = "pipeline-test"
-#    }
-#  }
 }
