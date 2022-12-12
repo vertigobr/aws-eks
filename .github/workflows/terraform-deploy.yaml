@@ -1,12 +1,12 @@
 name: deploy
 
 on:
-  workflow_run:
-    workflows:
-      - "backend"
-    types:
-      - completed
-
+  push:
+    branches:
+      - "*"
+      - "*/*"
+      - "**"
+      #- "!master"
 jobs:
   init:
     runs-on: ubuntu-latest
