@@ -28,7 +28,7 @@ jobs:
              cat main.tf 
              terraform init
 
-  apply:
+  destroy:
     runs-on: ubuntu-latest
     needs: init
 #    if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -66,4 +66,4 @@ jobs:
 #          name: plan-cache
 #         path: plan.cache
       - name: Terraform destroy
-        run: terraform destroy -input=false -no-color -auto-approve plan.cache
+        run: terraform destroy -no-color -auto-approve plan.cache
