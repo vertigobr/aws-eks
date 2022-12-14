@@ -23,24 +23,14 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrects.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY}}
+          aws-region: ${{ secrets.AWS_REGION }}
       - name: Terraform Init
         id: init
         run: |
              cat main.tf 
              terraform init
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -no-color -out plan.cache
-#      - name: encrypt cache
-#        run: zip --password "${{ secrets.ZIP_PASSWORD }}" plan.zip plan.cache
-      - name: "Upload Artifact"
-        uses: actions/upload-artifact@v2
-        with:
-          name: plan-cache
-          path: plan.cache
 
   apply:
     runs-on: ubuntu-latest
@@ -63,6 +53,21 @@ jobs:
             .terraform.lock.hcl
             plan.cache
           key: terraform-lock-${{ github.event.workflow_run.head_branch }}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY}}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -out plan.cache 
+#      - name: encrypt cache
+#        run: zip --password "${{ secrets.ZIP_PASSWORD }}" plan.zip plan.cache
+#      - name: "Upload Artifact"
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: plan-cache
+#         path: plan.cache
       - name: Terraform apply
         run: terraform apply -input=false -no-color -auto-approve plan.cache
-
