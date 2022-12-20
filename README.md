@@ -13,6 +13,6 @@ Com as variáveis de ambiente definida no repositório já é possível executar
 ### Pipeline
 
 A pipeline é dividia em 2 workflows, sendo eles:
-  - **Deploy:** Provisiona a infraestrutura e disponibiliza o kubeconfig do cluster no `artifact` da pipeline para download.
+  - **Deploy:** Provisiona a infraestrutura via Terraform.
   - **Destroy (execução manual):** Destrói a infraestrutura.
 
