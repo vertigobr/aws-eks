@@ -37,3 +37,8 @@ module "kubeconfig" {
 
   depends_on = [module.kubernetes]
 }
+module "eks-ebs-csi-driver_resources" {
+  source  = "andreswebs/eks-ebs-csi-driver/aws//modules/resources"
+  version = "1.1.0"
+  cluster_name     =   local.config.cluster_name             =
+}
