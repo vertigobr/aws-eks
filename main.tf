@@ -40,12 +40,14 @@ module "kubeconfig" {
 
 module "aws_ebs_csi_driver_iam" {
   source                      = "github.com/andreswebs/terraform-aws-eks-ebs-csi-driver//modules/iam"
+  version = "~> 1.1.0"
   cluster_oidc_provider       = ""
   k8s_namespace               = "kube-system"
   iam_role_name               = "ebs-csi-controller-${local.config.cluster_name}"
 }
 module "aws_ebs_csi_driver_resources" {
   source                           = "github.com/andreswebs/terraform-aws-eks-ebs-csi-driver//modules/resources"
+  version = "~> 1.1.0"
   cluster_name                     = local.config.cluster_name
   iam_role_arn                     = var.aws_ebs_csi_driver_iam_role_arn
   chart_version_aws_ebs_csi_driver = var.chart_version_aws_ebs_csi_driver
