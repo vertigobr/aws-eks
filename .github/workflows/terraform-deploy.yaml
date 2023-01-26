@@ -71,3 +71,11 @@ jobs:
 #         path: plan.cache
       - name: Terraform apply
         run: terraform apply -input=false -no-color -auto-approve plan.cache
+      - name: Kubeconf artefact
+        uses: actions/upload-artifact@v2
+        with:
+          name: kubeconf
+          path: |
+            kube/*
+          retention-days: 1
+
