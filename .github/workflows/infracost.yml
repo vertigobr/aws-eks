@@ -14,30 +14,17 @@ jobs:
       pull-requests: write
 
     env:
-      TF_ROOT: examples/terraform-project/code
-      # If you're using Terraform Cloud/Enterprise and have variables or private modules stored
-      # on there, specify the following to automatically retrieve the variables:
-      #   INFRACOST_TERRAFORM_CLOUD_TOKEN: ${{ secrets.TFC_TOKEN }}
-      #   INFRACOST_TERRAFORM_CLOUD_HOST: app.terraform.io # Change this if you're using Terraform Enterprise
+      TF_ROOT: ./
 
     steps:
-      # If you use private modules, add an environment variable or secret
-      # called GIT_SSH_KEY with your private key, so Infracost can access
-      # private repositories (similar to how Terraform/Terragrunt does).
-      # - name: add GIT_SSH_KEY
-      #   run: |
-      #     ssh-agent -a $SSH_AUTH_SOCK
-      #     mkdir -p ~/.ssh
-      #     echo "${{ secrets.GIT_SSH_KEY }}" | tr -d '\r' | ssh-add -
-      #     ssh-keyscan github.com >> ~/.ssh/known_hosts
-
+      - uses: hashicorp/setup-terraform@v2
       - name: Setup Infracost
         uses: infracost/actions/setup@v2
         # See https://github.com/infracost/actions/tree/master/setup for other inputs
         # If you can't use this action, see Docker images in https://infracost.io/cicd
         with:
           api-key: ${{ secrets.INFRACOST_API_KEY }}
-
+      
       # Checkout the base branch of the pull request (e.g. main/master).
       - name: Checkout base branch
         uses: actions/checkout@v3
