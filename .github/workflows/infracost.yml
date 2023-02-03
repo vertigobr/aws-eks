@@ -1,5 +1,10 @@
 name: infracost
-on: [pull_request]
+on:
+  push:
+    branches:
+      - "*"
+      - "*/*"
+      - "**"
 env:
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 jobs:
