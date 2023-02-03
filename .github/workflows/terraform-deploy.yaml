@@ -1,12 +1,8 @@
 name: deploy
 
 on:
-  push:
-    branches:
-      - "*"
-      - "*/*"
-      - "**"
-      #- "!master"
+  workflow_dispatch:
+  
 jobs:
   init:
     runs-on: ubuntu-latest
