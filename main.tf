@@ -47,5 +47,7 @@ module "eks-ebs-csi-driver_resources" {
   source  = "andreswebs/eks-ebs-csi-driver/aws//modules/resources"
   version = "1.1.0"
   cluster_name                     = local.config.cluster_name
+  chart_version_aws_ebs_csi_driver = "2.13.0"
+
   depends_on = [module.eks-ebs-csi-driver_iam]
 }
