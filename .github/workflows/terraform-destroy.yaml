@@ -66,4 +66,6 @@ jobs:
 #          name: plan-cache
 #         path: plan.cache
       - name: Terraform destroy
-        run: terraform destroy -auto-approve
+        run: |
+          terraform init
+          terraform destroy -auto-approve
