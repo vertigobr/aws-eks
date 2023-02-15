@@ -46,7 +46,6 @@ jobs:
       # Generate Infracost JSON file as the baseline.
       - name: Generate Infracost cost estimate baseline
         run: |
-          #infracost auth login
           infracost breakdown --show-skipped --path plan_cache.json
 
 
