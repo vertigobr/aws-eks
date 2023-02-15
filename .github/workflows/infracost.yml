@@ -24,10 +24,9 @@ jobs:
           path: |
             .terraform/**
             .terraform.lock.hcl
-            plan.cache
+            plan_cache.json
           key: terraform-lock-${{ steps.extract_branch.outputs.branch }}
-        # See https://github.com/infracost/actions/tree/master/setup for other inputs
-        # If you can't use this action, see Docker images in https://infracost.io/cicd
+
       - name: Checkout base branch
         uses: actions/checkout@v3
         with:

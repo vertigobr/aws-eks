@@ -55,16 +55,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY}}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY}}
           aws-region: ${{ secrets.AWS_REGION }}
-#      - name: Terraform Plan
-#        id: plan
-#        run: terraform plan -no-color -out plan.cache 
-#      - name: encrypt cache
-#        run: zip --password "${{ secrets.ZIP_PASSWORD }}" plan.zip plan.cache
-#      - name: "Upload Artifact"
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: plan-cache
-#         path: plan.cache
       - name: Terraform destroy
         run: |
           terraform init
