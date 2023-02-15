@@ -14,7 +14,7 @@ jobs:
           path: |
             .terraform/**
             .terraform.lock.hcl
-            plan.cache
+            plan_cache.json
           key: terraform-lock-${{ steps.extract_branch.outputs.branch }}
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -60,15 +60,9 @@ jobs:
         run: |
           terraform init
           terraform plan -no-color -out plan.cache 
-#      - name: encrypt cache
-#        run: zip --password "${{ secrets.ZIP_PASSWORD }}" plan.zip plan.cache
-#      - name: "Upload Artifact"
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: plan-cache
-#         path: plan.cache
+
       - name: Terraform apply
-        run: terraform apply -input=false -no-color -auto-approve plan.cache
+        run: terraform apply -input=false -no-color -auto-approve plan_cache.json
       - name: Kubeconf artefact
         uses: actions/upload-artifact@v2
         with:
