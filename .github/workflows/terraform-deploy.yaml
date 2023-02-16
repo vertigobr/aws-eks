@@ -55,7 +55,7 @@ jobs:
         id: plan
         run: |
           terraform init
-          terraform plan -no-color -out plan.cache.json
+          terraform plan -no-color -out plan_cache.json
 
       - name: Terraform apply
         run: terraform apply -input=false -no-color -auto-approve plan_cache.json
